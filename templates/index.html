@@ -1,0 +1,22 @@
+I{% extends 'registration/base.html' %}
+{% load static %}
+
+
+{% block auth %}
+
+    <h4 class="text-center">Manage your group savings with wase</h4>
+
+  <div class="d-grid gap-2 col-lg-12 mx-auto">
+    <a class="btn btn-success btn-lg mb-4 text-white" href="{% url 'signin' %}">Login</a>
+  </div>
+
+  <!-- <p class="text-center">
+    <span>Have second thoughts?</span>
+    <a href="{% url 'dashboard' %}">
+      <span>Go back</span>
+    </a>
+  </p> -->
+{% endblock auth %}
+    
+
+

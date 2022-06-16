@@ -1,0 +1,21 @@
+{% extends 'registration/base.html' %}
+{% load static %}
+
+
+{% block auth %}
+
+  <div >
+    <a class="btn btn-secondary mb-4" href="{% url 'signout' %}">Logout</a>
+  </div>
+
+  <p class="text-center">
+    <span>Have second thoughts?</span>
+    <a href="{% url 'dashboard' %}">
+      <span>Go back</span>
+    </a>
+  </p>
+  
+{% endblock auth %}
+    
+
+
