@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     # third party
+    "crispy_forms",
     # custom
     'accounts',
     'core',
@@ -200,5 +201,5 @@ EMAIL_HOST_PASSWORD=('EMAIL_HOST_PASSWORD')
 #     'redis': env.cache_url('REDIS_URL')
 # }
 
-# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-# CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"

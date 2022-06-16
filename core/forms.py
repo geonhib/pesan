@@ -11,8 +11,9 @@ class SaccoForm(forms.ModelForm):
     name = forms.CharField(label='Name of business', widget=forms.TextInput(attrs={'placeholder': 'Enter name of business'}))
     district = forms.CharField(label='District', widget=forms.TextInput(attrs={'placeholder': 'Enter district of business location'}))
     location = forms.CharField(label='Location', widget=forms.TextInput(attrs={'placeholder': 'Enter physical address'}))
-    email = forms.CharField(label='Email address', widget=forms.TextInput(attrs={'placeholder': 'Enter email address'}))
-    telephone = forms.CharField(label='Telephone', widget=forms.TextInput(attrs={'placeholder': 'Enter telephone number'}))
+    email = forms.CharField(label='Email address', widget=forms.TextInput(attrs={'placeholder': 'Enter email address of sacco'}))
+    telephone = forms.CharField(label='Telephone', widget=forms.TextInput(attrs={'placeholder': 'Enter telephone of sacco'}))
+    organization = forms.CharField(label='Organization', widget=forms.TextInput(attrs={'placeholder': 'Enter telephone of sacco'}))
 
     class Meta:
         model = Sacco

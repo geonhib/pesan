@@ -148,8 +148,8 @@ class SaccoUpdateView(UpdateView):
 
 class SaccoDeleteView(DeleteView):
     model = Sacco
-    context_object_name = 'sacco'
-    template_name = 'saccos/delete.html'
+    # context_object_name = 'sacco'
+    template_name = 'delete_template.html'
     success_url = reverse_lazy('sacco_list')
 
 

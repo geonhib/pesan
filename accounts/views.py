@@ -151,7 +151,7 @@ def password_change(request):
         if password_form.is_valid():
             password_form.save()
             update_session_auth_hash(request, password_form.user)
-            msg = f"{password_form.username} updated password"
+            msg = f"{password_form.email} updated password"
             print(msg)
             messages.success(request, msg)
             return redirect('dashboard')

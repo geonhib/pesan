@@ -76,7 +76,7 @@ class Sacco(CustomModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('business_detail', kwargs={'pk': self.pk})
+        return reverse('sacco_detail', kwargs={'pk': self.pk})
 
 
 # class SaccoUser(models.Model):
