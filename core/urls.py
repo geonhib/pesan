@@ -8,7 +8,7 @@ from .views import (
     PackageListView, PackageDetailView, 
     PackageUpdateView, PackageCreateView, PackageDeleteView, 
     package_activation, register,
-    LicenseCreateView, LicenseListView
+    LicenseCreateView, LicenseListView, license_add
 )
 
 urlpatterns = [
@@ -32,8 +32,8 @@ urlpatterns = [
     # Register user to sacco
     path('register', register, name='register'),
 
-    path('licenses/add', LicenseCreateView.as_view(), name='license_add'),
+    path('licenses/addsssss', LicenseCreateView.as_view(), name='license_add'),
     path('licenses', LicenseListView.as_view(), name='license_list'),
-
+    path('licenses/add', license_add, name='license_add'),
 
 ]

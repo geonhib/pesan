@@ -189,13 +189,13 @@ class PackageListView(ListView):
 class PackageDetailView(DetailView):
     model = Package
     context_object_name = 'package'
-    template_name = 'packages/detail.html'
+    template_name = 'packages/add.html'
 
 
 class PackageUpdateView(UpdateView):
     model = Package
     context_object_name = 'package'
-    template_name = 'packages/update.html'
+    template_name = 'packages/add.html'
     form_class = PackageForm
     # pk_url_kwarg: 'id'
 
@@ -205,7 +205,7 @@ class PackageUpdateView(UpdateView):
 
 class PackageDeleteView(DeleteView):
     model = Package
-    template_name = "packages/delete.html"
+    template_name = "delete_template.html"
     context_object_name = 'package'
     success_url = reverse_lazy('package_list')
 
@@ -285,6 +285,27 @@ class LicenseCreateView(CreateView):
         messages.success(self.request, 'License created successfuly')
         return super().form_valid(form)
 
+
+
+def license_add(request):
+    if request.method == 'POST':
+        form = LicenseForm(request.POST)
+        if form.is_valid():
+            instance=form.save(commit=False)
+            instance.key=generate_license()
+            print(instance.sacco)
+            # instance.sacco.status = 'active'
+            # instance.sacco.save()
+            # instance.save()
+            print(f'license {instance.key} added for {instance.sacco}')
+    else:
+        form = LicenseForm
+    context = {
+        'form': form,
+    }
+    return render(request, 'licenses/add.html', context)
+
+        
 
 class LicenseListView(ListView):
     model = License
