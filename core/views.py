@@ -1,3 +1,4 @@
+from turtle import circle
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.mail import send_mail
 from django.urls import reverse_lazy, reverse
@@ -279,34 +280,45 @@ class LicenseCreateView(CreateView):
     success_url = reverse_lazy('license_list')
 
     def form_valid(self, form):
-        form.instance.key = generate_license()
-        form.instance.sacco.status = 'active'
-        form.instance.sacco.save()
-        messages.success(self.request, 'License created successfuly')
-        return super().form_valid(form)
+        sacco_with_active_license = License.objects.filter(sacco=form.instance.sacco, status='active')
+        if sacco_with_active_license:
+                msg=f"Cannot generate license because {form.instance.sacco} already has an active license"
+                messages.info(self.request, msg)
+                return redirect('license_add')
+        else:
+            form.instance.key = generate_license()
+            form.instance.sacco.status = 'active'
+            form.instance.sacco.save()
+            msg=f'License generated for {form.instance.sacco}'
+            messages.success('License generated successfuly')
+            return super().form_valid(form)
 
 
-
-def license_add(request):
-    if request.method == 'POST':
-        form = LicenseForm(data=request.POST)
+# def license_add(request):
+#     if request.method == 'POST':
+#         form = LicenseForm(data=request.POST)
     
-        if form.is_valid():
-            instance=form.save(commit=False)
-            sacco = form.cleaned_data['sacco']
-            instance.sacco = sacco
-            instance.key=generate_license()
-            sacco.status = 'active'
-            sacco.save()
-            instance.save()
-            print(f'license {instance.key} added for {instance.sacco}')
-            return redirect('license_list')
-    else:
-        form = LicenseForm
-    context = {
-        'form': form,
-    }
-    return render(request, 'licenses/add.html', context)
+#         if form.is_valid():
+#             instance=form.save(commit=False)
+#             sacco = form.cleaned_data['sacco']
+#             instance.sacco = sacco
+            
+#             sacco_with_active_license = License.objects.filter(sacco=sacco, status='active')
+#             if sacco_with_active_license:
+#                 return redirect('license_add')
+#             else:
+#                 instance.key=generate_license()
+#                 sacco.status = 'active'
+#                 sacco.save()
+#                 instance.save()
+#                 print(f'license {instance.key} added for {instance.sacco}')
+#                 return redirect('license_list')
+#     else:
+#         form = LicenseForm
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'licenses/add.html', context)
 
         
 

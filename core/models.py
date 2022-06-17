@@ -7,6 +7,7 @@ from django.core.validators import MinValueValidator
 from django.urls import reverse
 from core.validators import image_validator, expire_now_or_future
 from django.utils import timezone
+# from core.views import EmailThread
 
 
 class SaccoManager(models.Manager):
@@ -123,28 +124,3 @@ class License(CustomModel):
             return msg
 
 
-
-    def expiry_reminder(self):
-        
-        """ Remind a director about license expiry, disable ."""
-        DAYS_LEFT = self.expiry_countdown()
-        MONTH = 30
-        DIRECTOR = self.sacco.director
-        if DAYS_LEFT <= MONTH:
-            msg = f"Hi {DIRECTOR} Your licenese expires in {DAYS_LEFT}, please renew"
-            # message 
-            # email 
-            # Send notification
-            # Audit
-            return msg
-        else:
-            return f"bon voyage, {DAYS_LEFT} more days."
-
-    def disable_expired_license(self):
-        """ Disable when countdown to expiry is zero"""
-        DAYS_LEFT = self.expiry_countdown()
-        if DAYS_LEFT == 0:
-            self.status = 'inactive'
-            return 'expired'
-        else:
-            return ''
