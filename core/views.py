@@ -292,9 +292,8 @@ def license_add(request):
         form = LicenseForm(data=request.POST)
     
         if form.is_valid():
-            print('am valid')
             instance=form.save(commit=False)
-            sacco = form.cleaned_data['business']
+            sacco = form.cleaned_data['sacco']
             instance.sacco = sacco
             instance.key=generate_license()
             sacco.status = 'active'

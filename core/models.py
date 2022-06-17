@@ -1,9 +1,12 @@
+from datetime import datetime
+from time import strftime
 from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from django.core.validators import MinValueValidator
 from django.urls import reverse
 from core.validators import image_validator, expire_now_or_future
+from django.utils import timezone
 
 
 class SaccoManager(models.Manager):
@@ -93,3 +96,55 @@ class License(CustomModel):
     def save_sacco(self):
         print(self.sacco)
         self.sacco.save()
+
+    def expiry_countdown(self):
+        """
+        Remind a director a before expiry of a license.
+        Disabled expired licenses.
+        Display days to license expiry.
+        """
+        DAYS_LEFT = (self.expiry_date - timezone.now()).days
+        MONTH = 30
+        DIRECTOR = self.sacco.director
+
+        if DAYS_LEFT == 0:
+            self.sacco.status = 'inactive'
+            self.status = 'inactive'
+            self.sacco.save()
+            self.save()
+            msg = f"License has expired."
+            return msg
+        elif DAYS_LEFT <= MONTH:
+            msg = f"{DAYS_LEFT} days left, please renew."
+            # TODO msgs, email, audit, notification
+            return msg 
+        else:
+            msg = f"{DAYS_LEFT} days to go."
+            return msg
+
+
+
+    def expiry_reminder(self):
+        
+        """ Remind a director about license expiry, disable ."""
+        DAYS_LEFT = self.expiry_countdown()
+        MONTH = 30
+        DIRECTOR = self.sacco.director
+        if DAYS_LEFT <= MONTH:
+            msg = f"Hi {DIRECTOR} Your licenese expires in {DAYS_LEFT}, please renew"
+            # message 
+            # email 
+            # Send notification
+            # Audit
+            return msg
+        else:
+            return f"bon voyage, {DAYS_LEFT} more days."
+
+    def disable_expired_license(self):
+        """ Disable when countdown to expiry is zero"""
+        DAYS_LEFT = self.expiry_countdown()
+        if DAYS_LEFT == 0:
+            self.status = 'inactive'
+            return 'expired'
+        else:
+            return ''

@@ -56,6 +56,7 @@
                 <th>License key</th>
                 <th>Sacco</th>
                 <th>Expiry date</th>
+                <th>Countdown</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -71,13 +72,24 @@
                   </div>
                 </td> -->
                 <td>{{license.key}}</td>
-                <td>{{license.sacco}}</td>
+                <td>
+                  
+                  {% if license.sacco.status == 'active' %}
+                  <span class="dot dot-md bg-success"></span>
+                  {{license.sacco|title}}
+                  {% else %}
+                  <span class="dot dot-md bg-danger"></span>
+                  {{license.sacco|title}}
+                  {% endif %}
+                    
+                </td>
                 <td>{{license.expiry_date}}</td>
+                <td>{{ license.expiry_countdown }}</td>
                 <td>
                     {% if license.status == 'active' %}
                     <span class="badge badge-success">Active</span>
                     {% else %}
-                    <span class="badge badge-warning">Inactive</span>
+                    <span class="badge badge-danger">Inactive</span>
                     {% endif %}  
                 </td>
                 <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

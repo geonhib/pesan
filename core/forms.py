@@ -33,10 +33,10 @@ class RegisterForm(forms.ModelForm):
 
 
 class LicenseForm(forms.ModelForm):
-    business = forms.ModelChoiceField(queryset=Sacco.objects.filter(status='inactive'), label='Sacco', empty_label='Select sacco')
+    sacco = forms.ModelChoiceField(queryset=Sacco.objects.filter(status='inactive'), label='Sacco', empty_label='Select sacco')
     class Meta:
         model = License
-        fields = [ 'business', 'expiry_date', ]
+        fields = [ 'sacco', 'expiry_date', ]
         widgets = {
             'expiry_date': widgets.DateInput(attrs={'type': 'date'}),
         }
@@ -45,7 +45,4 @@ class LicenseForm(forms.ModelForm):
         super(LicenseForm, self).__init__(*args, **kwargs)
         self.fields['key'].widget.attrs['readonly'] = True
 
-    # def clean(self):
-    #     x = ''
-    #     return x
 
