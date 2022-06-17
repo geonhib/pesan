@@ -229,7 +229,6 @@ def package_activation(request, pk):
 
 @login_required
 def register(request):
-
     try:
         sacco = Sacco.objects.get(director=request.user)
         # biz=saccoUser.objects.get(user=request.user, sacco=sacco)
@@ -326,6 +325,23 @@ class LicenseListView(ListView):
     model = License
     template_name = "licenses/list.html"
     context_object_name = 'licenses'
+
+
+class LicenseUpdateView(UpdateView):
+    model = License
+    context_object_name = 'license'
+    template_name = 'licenses/add.html'
+    form_class = LicenseForm
+
+    def get_success_url(self):
+        return reverse('license_update', kwargs={self.pk_url_kwarg:self.kwargs['pk']})
+
+
+class LicenseDeleteView(DeleteView):
+    model = License
+    template_name = "delete_template.html"
+    context_object_name = 'object'
+    success_url = reverse_lazy('license_list')
     
 
 

@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-12">
-        <h2 class="page-title">{{sacco|title}}</h2>
+        <h2 class="page-title">Delete</h2>
         <!-- <p class="text-muted">Demo for form control styles, layout options, and custom components for creating a wide variety of forms.</p> -->
 
         <div class="row">
@@ -18,7 +18,7 @@
               <div class="card-body">
                 
                 <form action="" method="post">
-                    <h4>Register Sacco</h4>
+                    <h4>Delete item</h4>
                     {% csrf_token %}
                     <p>Are you sure you want to delete <span class="font-weight-bold">{{object}}</span> </p>
                     <input class="btn btn-danger" type="submit" value="Delete">

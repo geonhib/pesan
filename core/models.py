@@ -92,7 +92,7 @@ class License(CustomModel):
         unique_together = ['key', 'sacco']
 
     def __str__(self):
-        return f"{self.sacco} - {self.expiry_date}" 
+        return f"{self.key}" 
 
     def save_sacco(self):
         print(self.sacco)

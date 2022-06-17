@@ -8,9 +8,9 @@ from .views import (
     PackageListView, PackageDetailView, 
     PackageUpdateView, PackageCreateView, PackageDeleteView, 
     package_activation, register,
-    LicenseCreateView, LicenseListView, 
+    LicenseCreateView, LicenseListView, LicenseUpdateView, LicenseDeleteView,
     # license_add, 
-    
+
 )
 
 urlpatterns = [
@@ -22,7 +22,7 @@ urlpatterns = [
     path('packages', PackageListView.as_view(), name='package_list'),
     path('packages/<int:pk>/detail', PackageDetailView.as_view(), name='package_detail'),
     path('packages/<int:pk>/update', PackageUpdateView.as_view(), name='package_update'),
-    path('package/<str:pk>/delete', PackageDeleteView.as_view(), name='package_delete'),   
+    path('packages/<str:pk>/delete', PackageDeleteView.as_view(), name='package_delete'),   
     path('package_activation/<str:pk>', package_activation, name='package_activation'),  
 
     path('saccos/add', sacco_add, name='sacco_add' ),
@@ -37,5 +37,7 @@ urlpatterns = [
     path('licenses/add', LicenseCreateView.as_view(), name='license_add'),
     path('licenses', LicenseListView.as_view(), name='license_list'),
     # path('licenses/add', license_add, name='license_add'),
+    path('licenses/<int:pk>/update', LicenseUpdateView.as_view(), name='license_update'),
+    path('licenses/<str:pk>/delete', LicenseDeleteView.as_view(), name='license_delete'), 
 
 ]
