@@ -60,7 +60,7 @@
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="{{ user.get_absolute_url }}">Profile</a>
               <a class="dropdown-item" href="#">Settings</a>
               <a class="dropdown-item" href="#">Activities</a>
               <a class="dropdown-item" href="{% url 'pre_signout' %}">Logout</a>
@@ -529,6 +529,16 @@
         </div>
       </main> <!-- main -->
     </div> <!-- .wrapper -->
+
+    
+    <script>
+      setTimeout(() => {  
+      const myAlert = document.querySelector('.alert');    
+      const alert = new bootstrap.Alert(myAlert)  
+      alert.close()  
+      }, 2000)
+  </script>
+
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/moment.min.js' %}"></script>

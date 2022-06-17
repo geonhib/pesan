@@ -1,5 +1,3 @@
-from enum import unique
-from tabnanny import verbose
 from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()

@@ -23,14 +23,30 @@
               <div class="row mt-5 align-items-center">
                 <div class="col-md-3 text-center mb-5">
                   <div class="avatar avatar-xl">
-                    <img src="{% static 'assets/avatars/face-1.jpg' %}" alt="..." class="avatar-img rounded-circle">
+                    
+                    {% if user.photo %}
+                    <img src="{{ user.photo.url }}" alt="photo" class="avatar-img rounded-circle">
+                    {% else %}
+                    <img src="{% static 'assets/avatars/avatar.jpg' %}" alt="photo" class="avatar-img rounded-circle">
+                    {% endif %}
+                      
                   </div>
                 </div>
                 <div class="col">
                   <div class="row align-items-center">
                     <div class="col-md-7">
-                      <h4 class="mb-1">Brown, Asher</h4>
-                      <p class="small mb-3"><span class="badge badge-dark">New York, USA</span></p>
+                      <h4 class="mb-1">{{user.get_full_name}}</h4>
+                      <p class="small mb-3">
+                      <span class="badge badge-dark">
+                        {% if user.is_superuser %}
+                        Admin
+                        {% elif user.is_staff %}
+                        Director
+                        {% else %}
+                        Sacco member
+                        {% endif %}
+                      </span>
+                    </p>
                     </div>
                   </div>
                   <div class="row mb-4">
