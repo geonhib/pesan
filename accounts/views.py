@@ -45,18 +45,18 @@ def signin(request):
                 login(request, user)
                 if request.user.is_previously_logged_in:
                     messages.success(request, f'Hi {user.email}! You have been logged in')
-                    print('logged in')
                 else:
-                    messages.success(request, f'Hi {user.email}! You have been logged in, however change your password to use the system')
-                    print('first timer')
+                    messages.info(request, f'Hi {user.email}! You have been logged in, however change your password to use the system')
                 return redirect('dashboard')
             else:
                 message = 'Incorrect email or password'
                 messages.warning(request, message)
-                print(message)
+        else:
+            errors = forms.errors
+            messages.warning(request, errors)
     else:
         form = forms.LoginForm()
-        print('GET loginnn')
+
     return render(
         request, 'registration/login.html', context={'form': form, 'message': message})
 
@@ -67,6 +67,7 @@ def pre_signout(request):
 
 def signout(request):
     logout(request)
+    messages.warning(request, 'You have successfully signed out')
     return redirect('homepage')
 
 
@@ -90,6 +91,8 @@ def delete_user(request,pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
         user.delete()
+        msg = f"{user} deleted successfully."
+        messages.success(request, msg)
         return redirect('users')
     context={'object': user}
     return render(request, 'delete_template.html', context)
@@ -97,24 +100,24 @@ def delete_user(request,pk):
 
 def user_activation(request, pk):
     user = get_object_or_404(User, pk=pk)
-    activated_msg = f"{request.user} activated {user}"
+    activation_msg = f"{request.user} activated {user}"
     email = user.email
-    deactivated_msg = f"{request.user}dactivated {user}"
+    deactivation_msg = f"{request.user}dactivated {user}"
     if user.is_active == True:
         user.is_active = False
         user.save()
-        messages.info(request, deactivated_msg)
+        messages.info(request, deactivation_msg)
         url =  user.get_absolute_url()
         # Audit.objects.create(event=deactivated_msg, url=url, created_on=timezone.now(), created_by=request.user)
-        EmailThread.send_mail('Account deactivation', deactivated_msg, EMAIL_HOST_USER, [email], fail_silently=False)
+        EmailThread.send_mail('Account deactivation', deactivation_msg, EMAIL_HOST_USER, [email], fail_silently=False)
         return redirect('user', pk=user.id)
     else: 
         user.is_active = True
         user.save()
-        messages.info(request, activated_msg)
+        messages.info(request, activation_msg)
         url =  user.get_absolute_url()
         # Audit.objects.create(event=activated_msg, url=url, created_on=timezone.now(), created_by=request.user)
-        EmailThread.send_mail('Account deactivation', activated_msg, EMAIL_HOST_USER, [email], fail_silently=False)
+        EmailThread.send_mail('Account deactivation', activation_msg, EMAIL_HOST_USER, [email], fail_silently=False)
         return redirect('user', pk=user.id)
 
 
@@ -128,7 +131,6 @@ def first_login(request):
             instance = password_form.save(commit=False)
             instance.is_previously_logged_in = True
             # TODO old and new password shouldnt match
-            # print(f"{instance.old_password} {instance.password}")
             instance.save()
             update_session_auth_hash(request, password_form.user)
             msg = f"{instance} updated password"
@@ -137,7 +139,8 @@ def first_login(request):
             return redirect('dashboard')
         else:
             print('password change failed')
-            print(password_form.errors)
+            msg=password_form.errors
+            messages.warning(request, msg)
     return render(request, 'registration/first_login.html', {
         'password_form': password_form,
     })
@@ -156,8 +159,8 @@ def password_change(request):
             messages.success(request, msg)
             return redirect('dashboard')
         else:
-            print('not changed')
-            print(password_form.errors)
+            msg = password_form.errors
+            messages.warning(request, msg)
     return render(request, 'registration/password_change_form.html', {
         'password_form': password_form,
     })

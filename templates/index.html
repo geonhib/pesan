@@ -4,18 +4,13 @@ I{% extends 'registration/base.html' %}
 
 {% block auth %}
 
-    <h4 class="text-center">Manage your group savings with ease</h4>
+  <h1 class="display-1 m-0 font-weight-bolder text-muted" style="font-size:80px;">Homepage</h1>
+  <h1 class="mb-1 text-muted font-weight-bold">Welcome!</h1>
+  <h6 class="mb-3 text-muted">Manage your group savings with ease</h6>
 
-  <div class="d-grid gap-2 col-lg-12 mx-auto">
-    <a class="btn btn-success btn-lg mb-4 text-white" href="{% url 'signin' %}">Login</a>
-  </div>
+  <a href="{% url 'signin' %}" class="btn btn-lg btn-primary px-5">Login</a>
 
-  <!-- <p class="text-center">
-    <span>Have second thoughts?</span>
-    <a href="{% url 'dashboard' %}">
-      <span>Go back</span>
-    </a>
-  </p> -->
+
 {% endblock auth %}
     
 

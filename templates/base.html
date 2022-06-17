@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
     <title>Pesan - Group finance made easy</title>
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href="{% static 'css/simplebar.css' %}">
@@ -36,15 +36,20 @@
               <i class="fe fe-sun fe-16"></i>
             </a>
           </li> -->
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-shortcut">
               <span class="fe fe-grid fe-16"></span>
             </a>
-          </li>
-          <li class="nav-item nav-notif">
+          </li> -->
+          <!-- <li class="nav-item nav-notif">
             <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-notif">
               <span class="fe fe-bell fe-16"></span>
               <span class="dot dot-md bg-success"></span>
+            </a>
+          </li> -->
+          <li class="nav-item nav-notif">
+            <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-notif">
+              <span class="">{{user}}</span>
             </a>
           </li>
           <li class="nav-item dropdown">
@@ -61,7 +66,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="{{ user.get_absolute_url }}">Profile</a>
-              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" href="{% url 'settings' %}">Settings</a>
               <a class="dropdown-item" href="#">Activities</a>
               <a class="dropdown-item" href="{% url 'pre_signout' %}">Logout</a>
             </div>
@@ -83,6 +88,7 @@
                   <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
                 </g>
               </svg>
+              <span class="h4">PESAn</span>
             </a>
           </div>
           <ul class="navbar-nav flex-fill w-100 mb-2">

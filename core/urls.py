@@ -1,7 +1,7 @@
 from audioop import lin2adpcm
 from django.urls import path
 from .views import (
-    settings, Homepage, dashboard, 
+    settings, Homepage, dashboard,  Waiting,
     sacco_add, SaccoListView, 
     SaccoDetailView, SaccoDeleteView,  SaccoUpdateView, 
     sacco_activation, 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('', Homepage.as_view(), name='homepage'),
     path('dashboard', dashboard, name='dashboard'),
     path('settings', settings, name='settings'),
+    path('waiting', Waiting.as_view(), name='waitng'),
 
     path('packages/add', PackageCreateView.as_view(), name='package_add' ),
     path('packages', PackageListView.as_view(), name='package_list'),

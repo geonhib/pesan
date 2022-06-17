@@ -36,6 +36,10 @@ def error_500(request):
     return render(request, '500.html', status=500)
 
 
+class Waiting(TemplateView):
+    template_name = 'waiting.html'
+
+
 class EmailThread(threading.Thread):
     """
     Threaded object to handle sending emails asynchronously
@@ -118,9 +122,11 @@ def sacco_add(request):
                 return redirect('sacco_detail', sacco_instance.id)
             
         else:
-            print(sacco_form.errors)
-            print(user_form.errors)
-            raise ValidationError('sacco could not be created.')
+            sacco_msg=sacco_form.errors
+            user_msg=user_form.errors
+            messages.warning(request, sacco_msg)
+            messages.warning(request, user_msg)
+            raise ValidationError('Sorry, sacco could not be created.')
 
     else:
         sacco_form = SaccoForm()
@@ -145,6 +151,12 @@ class SaccoUpdateView(UpdateView):
     context_object_name = 'sacco'
     template_name = 'saccos/update.html'
     fields = '__all__'
+    success_message = "%(sacco) was edited."
+
+    def form_valid(self, form):
+        msg= f"Sacco {{form.instance.name}} updated successfully."
+        messages.success(self.request, msg)
+        return super().form_valid(form)
 
 
 class SaccoDeleteView(DeleteView):
@@ -152,6 +164,11 @@ class SaccoDeleteView(DeleteView):
     # context_object_name = 'sacco'
     template_name = 'delete_template.html'
     success_url = reverse_lazy('sacco_list')
+
+    def form_valid(self, form):
+        msg= f"Sacco {{form.instance.name}} deleted."
+        messages.success(self.request, msg)
+        return super().form_valid(form)
 
 
 def sacco_activation(request, pk):
@@ -172,13 +189,16 @@ def sacco_activation(request, pk):
         return redirect('sacco_detail',  sacco.id)
 
 
-
-
 class PackageCreateView(CreateView):
     model = Package
     template_name = "packages/add.html"
     form_class = PackageForm 
     success_url = reverse_lazy('package_list')
+
+    def form_valid(self, form):
+        msg= f"Package {{form.instance.name}} created successfully."
+        messages.success(self.request, msg)
+        return super().form_valid(form)
 
 
 class PackageListView(ListView):
@@ -200,15 +220,25 @@ class PackageUpdateView(UpdateView):
     form_class = PackageForm
     # pk_url_kwarg: 'id'
 
+    def form_valid(self, form):
+        msg= f"Package {{form.instance.name}} updated successfully."
+        messages.success(self.request, msg)
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse('package_update', kwargs={self.pk_url_kwarg:self.kwargs['pk']})
-
+    
 
 class PackageDeleteView(DeleteView):
     model = Package
     template_name = "delete_template.html"
     context_object_name = 'package'
     success_url = reverse_lazy('package_list')
+
+    def form_valid(self, form):
+        msg= f"Package {{form.instance.name}} deleted."
+        messages.success(self.request, msg)
+        return super().form_valid(form)
 
 
 def package_activation(request, pk):
@@ -264,7 +294,7 @@ def register(request):
 
 # Generate random string
 import random, string
-""""Generates license key of 20 characters made of strings, numbers and special characters. """
+""""Generate license key of comprising of strings, numbers and special characters. """
 def generate_license(num=20):
     result=''.join(random.choice(string.ascii_letters) for i in range(num))
     characters = string.ascii_letters + string.digits + string.punctuation
@@ -333,6 +363,11 @@ class LicenseUpdateView(UpdateView):
     template_name = 'licenses/add.html'
     form_class = LicenseForm
 
+    def form_valid(self, form):
+        msg= f"License key generated for {{form.instance.sacco}}"
+        messages.success(self.request, msg)
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse('license_update', kwargs={self.pk_url_kwarg:self.kwargs['pk']})
 
@@ -342,6 +377,11 @@ class LicenseDeleteView(DeleteView):
     template_name = "delete_template.html"
     context_object_name = 'object'
     success_url = reverse_lazy('license_list')
+
+    def form_valid(self, form):
+        msg= f"License key of {{form.instance.sacco}} deleted"
+        messages.success(self.request, msg)
+        return super().form_valid(form)
     
 
 
