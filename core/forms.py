@@ -13,17 +13,16 @@ class SaccoForm(forms.ModelForm):
     location = forms.CharField(label='Location', widget=forms.TextInput(attrs={'placeholder': 'Enter physical address'}))
     email = forms.CharField(label='Email address', widget=forms.TextInput(attrs={'placeholder': 'Enter email address of sacco'}))
     telephone = forms.CharField(label='Telephone', widget=forms.TextInput(attrs={'placeholder': 'Enter telephone of sacco'}))
-    organization = forms.CharField(label='Organization', widget=forms.TextInput(attrs={'placeholder': 'Enter telephone of sacco'}))
 
     class Meta:
         model = Sacco
-        fields = ('name', 'package', 'district', 'location', 'email', 'telephone',   )
+        fields = ('name', 'package', 'district', 'location', 'email',  )
 
 
 class PackageForm(forms.ModelForm):
     class Meta:
         model = Package
-        fields = ['name', 'capacity', 'status']
+        fields = ['name', 'capacity', 'price', ]
 
 
 class RegisterForm(forms.ModelForm):

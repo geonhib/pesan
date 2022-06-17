@@ -289,15 +289,19 @@ class LicenseCreateView(CreateView):
 
 def license_add(request):
     if request.method == 'POST':
-        form = LicenseForm(request.POST)
+        form = LicenseForm(data=request.POST)
+    
         if form.is_valid():
+            print('am valid')
             instance=form.save(commit=False)
+            sacco = form.cleaned_data['business']
+            instance.sacco = sacco
             instance.key=generate_license()
-            print(instance.sacco)
-            # instance.sacco.status = 'active'
-            # instance.sacco.save()
-            # instance.save()
+            sacco.status = 'active'
+            sacco.save()
+            instance.save()
             print(f'license {instance.key} added for {instance.sacco}')
+            return redirect('license_list')
     else:
         form = LicenseForm
     context = {

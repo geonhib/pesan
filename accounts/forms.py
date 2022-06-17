@@ -30,7 +30,6 @@ MARITAL_STATUS = (
     ('divorced', 'divorced'),
 )
 EMPLOYER_TYPE = (
-    ('unemmployed', 'unemployed'),
     ('self-employed', 'self-employed'),
     ('organization', 'organization'),
 )
@@ -46,17 +45,18 @@ class UserForm(forms.ModelForm):
     telephone = forms.CharField(label='Telephone', widget=forms.TextInput(attrs={'placeholder': 'Enter telephone number'}))
     id_type = forms.ChoiceField(label='ID type', widget=forms.Select, choices=ID_TYPE)
     id_number = forms.CharField(label='ID number', widget=forms.TextInput(attrs={'placeholder': 'Enter your ID number'}))
-    gender = forms.CharField(label='gender', widget=forms.Select(attrs={'placeholder': 'Enter telephone number'}))
+    gender = forms.ChoiceField(widget=forms.Select, choices=GENDER)
     next_of_kin_name = forms.CharField(label='Next of kin name', widget=forms.TextInput(attrs={'placeholder': 'Enter name of next of kin'}))
     next_of_kin_contact = forms.CharField(label='Next of kin contact', widget=forms.TextInput(attrs={'placeholder': 'Enter contact of next of kin'}))
-    gender = forms.ChoiceField(widget=forms.Select, choices=GENDER)
+    # organization = forms.CharField(label='Organization', widget=forms.Select(attrs={'placeholder': 'Enter name of organization you are employed at'}))
+    organization = forms.CharField(label='Organization', widget=forms.TextInput(attrs={'placeholder': 'Enter the organization you work at'}))
 
     class Meta:
         model = User
         fields = (
             'first_name', 'last_name', 'email', 'telephone', 'id_type', 'id_number',
-            'date_of_birth', 'gender', 'next_of_kin_name', 'next_of_kin_contact',
-            'employer_type', 'organization', 'organization',     
+            'date_of_birth', 'gender',  'employer_type', 'organization',
+             'next_of_kin_name', 'next_of_kin_contact', 
           )
         widgets = {
             'date_of_birth': widgets.DateInput(attrs={'type': 'date'}),

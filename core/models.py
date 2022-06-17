@@ -30,15 +30,11 @@ class CustomModel(models.Model):
         ordering = ['created_on']
 
 
-PRICES = (
-    ('120000', '120000'),
-    ('240000', '240000')
-)
 class Package(CustomModel):
     # TODO Ensure packages always exist.
     name = models.CharField(max_length=60, unique=True)
     capacity = models.PositiveIntegerField()
-    price = models.CharField(max_length=9, choices=PRICES, default='120000')
+    price = models.PositiveIntegerField(validators=[MinValueValidator(120000)], help_text='The minimum package price is 120,000/= per year ')
     status = models.CharField(max_length=10, default='active')
 
     def __str__(self):
@@ -57,7 +53,6 @@ class Sacco(CustomModel):
     district = models.CharField(max_length=60, null=True, blank=True,)
     location = models.CharField(max_length=60, null=True, blank=True,)
     email = models.EmailField(null=True, blank=True, unique=True)  
-    telephone = models.CharField(max_length=60, blank=True, null=True, unique=True)
     # website = models.URLField(null=True, blank=True)
     director = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='bussiness_director', blank=True,)
     status = models.CharField(max_length=10, default='inactive')
@@ -94,3 +89,7 @@ class License(CustomModel):
 
     def __str__(self):
         return f"{self.sacco} - {self.expiry_date}" 
+
+    def save_sacco(self):
+        print(self.sacco)
+        self.sacco.save()
