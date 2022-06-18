@@ -76,9 +76,16 @@ class Sacco(CustomModel):
         return reverse('sacco_detail', kwargs={'pk': self.pk})
 
 
-# class SaccoUser(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.PROTECT)
-#     business = models.ForeignKey(Business, on_delete=models.PROTECT)
+class SaccoUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='members')
+    sacco = models.ForeignKey(Sacco, on_delete=models.RESTRICT, related_name='business')
+
+    class Meta:
+        # unique_together = ['user', 'sacco', ]
+        verbose_name_plural = 'Sacco users'
+
+    def __str__(self):
+        return f"{self.user} - {self.sacco}"
 
 
 class License(CustomModel):

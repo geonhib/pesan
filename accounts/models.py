@@ -51,7 +51,6 @@ MARITAL_STATUS = (
     ('divorced', 'divorced'),
 )
 EMPLOYER_TYPE = (
-    ('unemmployed', 'unemployed'),
     ('self-employed', 'self-employed'),
     ('organization', 'organization'),
 )
@@ -121,3 +120,30 @@ class User(AbstractBaseUser, PermissionsMixin):
         return reverse('user', kwargs={'pk': self.pk})
 
     # other methods
+
+
+
+
+# class Admin(User):
+#     pass
+
+# class Member(User):
+#     pass 
+
+
+
+# class Roles(models.Model):
+#     '''m2m permissions'''
+#     superuser= ...
+#     director = ..
+#     member = ...   
+
+# class UserRoles(models.Model):
+#     user = fk
+#     role = fk
+#     sccoo = fk
+
+
+
+
+

@@ -1,4 +1,4 @@
-import re
+
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
@@ -15,6 +15,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from core.models import Sacco, SaccoUser
 
 
 def signup(request):
@@ -71,14 +72,39 @@ def signout(request):
     return redirect('homepage')
 
 
+
+
 def users(request):
     users = User.objects.all()
-    if request.user.is_superuser:
-        users = users.filter(is_staff=True) 
-    else:
-        users = users.filter(is_staff=False, is_superuser=False)
-    context = {'users':users}
-    return render(request, 'account/users.html', context)
+    sacco = Sacco.objects.get(director=request.user)
+
+    # in_sacco = SaccoUser.objects.filter(sacco=sacco)
+    # print(in_sacco)
+
+    sacco_users = SaccoUser.objects.filter(sacco=sacco).select_related('user')
+    myitems = []
+    for s in sacco_users:
+        # print(s.user)
+        myitems.append({
+            'email':s.user.email,
+            'gender': s.user.gender,
+            'get_full_name': s.user.get_full_name(),
+            'is_active': s.user.is_active,
+            })
+        # print(myitems)
+
+    
+
+
+        # sacco_users = SaccoUser.objects.filter(user=users, sacco=sacco)
+        # sacco_users = users.filter(is_staff=False, is_superuser=False)
+        
+    context = {
+        'users': myitems,
+        }
+    return render(request, 'account/list.html', context)
+
+
 
 
 def user(request, pk):

@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Package, Sacco, License
+from .models import Package, Sacco, License, SaccoUser
 
 
 admin.site.register(Package)
 admin.site.register(Sacco)
-
+admin.site.register(SaccoUser)
 
 @admin.register(License)
 class UserAdmin(admin.ModelAdmin):

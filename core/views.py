@@ -13,7 +13,7 @@ import urllib.request
 from django.utils import timezone
 from django.contrib import messages
 from core.forms import SaccoForm, LicenseForm
-from .models import Sacco, Package, License
+from .models import Sacco, SaccoUser, Package, License
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from accounts.forms import UserForm
@@ -24,6 +24,7 @@ host = settings.EMAIL_HOST_USER
 from django.db import models
 from .forms import PackageForm
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import Group
 
 
 def error_404(request, exception):
@@ -91,6 +92,11 @@ class SaccoListView(ListView):
     template_name = 'saccos/list.html'
     context_object_name = 'saccos'
 
+    def get_queryset(self):
+        groups = Group.objects.all()
+        print(groups)
+        return super().get_queryset()
+
 
 def sacco_add(request):
     if request.method == 'POST':
@@ -112,7 +118,8 @@ def sacco_add(request):
             else:
                 user_instance.save()
                 user_instance = authenticate(email=user_instance.email, password=password)
-                sacco_form.save()
+                sacco_instance.save()
+                sacco_user = SaccoUser.objects.create(user=user_instance, sacco=sacco_instance)
                 print(f"sacco:{sacco_instance} created for user:{sacco_instance.director} password: {password}")
                 msg = f"sacco:{sacco_instance} created for user:{sacco_instance.director}"
                 messages.success(request, msg)
@@ -124,6 +131,8 @@ def sacco_add(request):
         else:
             sacco_msg=sacco_form.errors
             user_msg=user_form.errors
+            print(sacco_msg)
+            print(user_msg)
             messages.warning(request, sacco_msg)
             messages.warning(request, user_msg)
             raise ValidationError('Sorry, sacco could not be created.')
@@ -259,37 +268,41 @@ def package_activation(request, pk):
 
 @login_required
 def register(request):
+    """Sacco director adds sacco member"""
     try:
-        sacco = Sacco.objects.get(director=request.user)
-        # biz=saccoUser.objects.get(user=request.user, sacco=sacco)
-        # biz = sacco.objects.get(sacco_user__user=request.user, sacco_user__user=sacco)
+        director = request.user
+        sacco = Sacco.objects.get(director=director)
+        # sacco_user = SaccoUser.objects.create(user=user, sacco=sacco)
     except:
-        sacco = ''
+        sacco_user = ''
 
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-
             if User.objects.filter(email=user.email).exists():
-                raise ValidationError('User already exists')
+                messages.info(request, 'User already exists')
+                # raise ValidationError('User already exists')
+                form = UserForm()
             else:
                 password = User.objects.make_random_password()
                 user.set_password(password)
                 user.save()
-                user = authenticate(email=user.email, password=password)
-                print(f"Director: {request.user} created user: {user} password: {password}")
-                msg = f"Director: {request.user} created user: {user}"
+                user = authenticate(email=user.email, password=password)  
+                sacco_user = SaccoUser.objects.create(user=user, sacco=sacco)
+                print(f"Director: {director} created user: {user} password: {password}")
+                msg = f"Director: {director} created user: {user}"
                 messages.success(request, msg)
                 # audit
                 email=user.email
                 EmailThread.send_mail('School registered', msg, host, [email, ], fail_silently=False)
+                SaccoUser.objects.create(user=user, sacco=sacco)
             return redirect('dashboard')
         else:
             print(form.errors)
     else:
         form = UserForm()   
-    return render(request, 'saccos/register.html', {'form': form})
+    return render(request, 'account/add.html', {'form': form})
 
 
 # Generate random string

@@ -33,15 +33,9 @@
             </div>
             <div class="col ml-auto">
               <div class="dropdown float-right">
-                
-                {% if request.user.is_superuser %}
-                <a href="{% url 'license_add' %}" class="btn btn-primary text-white">Generate license</a>
+                <a href="{% url 'register' %}" class="btn btn-primary">Add Member</a>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="actionMenuButton" 
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action </button>
-                {% else %}
-                {{empty}}
-                {% endif %}
-                
                 <div class="dropdown-menu" aria-labelledby="actionMenuButton">
                   <a class="dropdown-item" href="#">Export</a>
                   <a class="dropdown-item" href="#">Delete</a>
@@ -60,17 +54,16 @@
                     <label class="custom-control-label" for="all"></label>
                   </div>
                 </th> -->
-                <th>License key</th>
-                <th>Sacco</th>
-                <th>Expiry date</th>
-                <th>Countdown</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Gender</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-
-             {% for license in licenses %}
+             
+             {% for user in users %}
              <tr>
                 <!-- <td>
                   <div class="custom-control custom-checkbox">
@@ -78,34 +71,25 @@
                     <label class="custom-control-label" for="2132"></label>
                   </div>
                 </td> -->
-                <td>{{license.key}}</td>
+                <td>{{user.get_full_name}}</td>
+                <td> <a href="{{ user.get_absolute_url }}">{{user.email}}</a> </td>
+                <td>{{user.gender|title}}</td>
                 <td>
-                  
-                  {% if license.sacco.status == 'active' %}
-                  <span class="dot dot-md bg-success"></span>
-                  {{license.sacco|title}}
-                  {% else %}
-                  <span class="dot dot-md bg-danger"></span>
-                  {{license.sacco|title}}
-                  {% endif %}
-                    
-                </td>
-                <td>{{license.expiry_date}}</td>
-                <td>{{ license.expiry_countdown }}</td>
-                <td>
-                    {% if license.status == 'active' %}
-                    <span class="badge badge-success">Active</span>
+                    {% if user.is_active == True %}
+                    <span class="badge badge-success text-white">Active</span>
                     {% else %}
-                    <span class="badge badge-danger">Inactive</span>
+                    <span class="badge badge-warning text-center">Inactive</span>
                     {% endif %}  
                 </td>
-                <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <td>
+                  <!-- <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="text-muted sr-only">Action</span>
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="{% url 'license_update' license.id %}">Edit</a>
-                    <a class="dropdown-item" href="{% url 'license_delete' license.id %}">Remove</a>
-                  </div>
+                    <a class="dropdown-item" href="#">Edit</a>
+                    <a class="dropdown-item" href="#">Remove</a>
+                  </div> -->
+                 <a href="{{ user.get_absolute_url}}"><i class="fe fe-eye text-dark  "></i></a>
                 </td>
               </tr> 
              {% endfor %}

@@ -104,12 +104,34 @@
             <span>Admin</span>
           </p>
           <ul class="navbar-nav flex-fill w-100 mb-2">
+            
+            {% if request.user.is_superuser %}
             <li class="nav-item w-100">
               <a class="nav-link" href="{% url 'sacco_list' %}">
                 <i class="fe fe-package fe-16"></i>
                 <span class="ml-3 item-text">Saccos</span>
               </a>
             </li>
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{% url 'package_list' %}">
+                <i class="fe fe-shopping-bag fe-16"></i>
+                <span class="ml-3 item-text">Packages</span>
+              </a>
+            </li>
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{% url 'license_list' %}">
+                <i class="fe fe-key  fe-16"></i>
+                <span class="ml-3 item-text">Licences</span>
+              </a>
+            </li>
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{% url 'settings' %}">
+                <i class="fe fe-settings fe-16"></i>
+                <span class="ml-3 item-text">Settings</span>
+              </a>
+            </li>
+
+            {% elif request.user.is_staff  %}
 
             <li class="nav-item w-100">
               <a class="nav-link" href="{% url 'package_list' %}">
@@ -117,20 +139,31 @@
                 <span class="ml-3 item-text">Packages</span>
               </a>
             </li>
-
-            <li class="nav-item w-100">
-              <a class="nav-link" href="{% url 'license_list' %}">
-                <i class="fe fe-key  fe-16"></i>
-                <span class="ml-3 item-text">Licences</span>
-              </a>
-            </li>
-
             <li class="nav-item w-100">
               <a class="nav-link" href="{% url 'settings' %}">
                 <i class="fe fe-settings fe-16"></i>
                 <span class="ml-3 item-text">Settings</span>
               </a>
             </li>
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{% url 'users' %}">
+                <i class="fe fe-users  fe-16"></i>
+                <span class="ml-3 item-text">Users</span>
+              </a>
+            </li>
+            {% else %}
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{{ user.get_absolute_url }}">
+                <i class="fe fe-shopping-bag fe-16"></i>
+                <span class="ml-3 item-text">Profile</span>
+              </a>
+            </li>
+            {% endif %}
+              
+           
+
+
+         
 
           <!-- <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
