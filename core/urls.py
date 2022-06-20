@@ -19,7 +19,7 @@ urlpatterns = [
     path('', Homepage.as_view(), name='homepage'),
     path('dashboard', dashboard, name='dashboard'),
     path('settings', settings, name='settings'),
-    path('waiting', Waiting.as_view(), name='waitng'),
+    path('waiting', Waiting.as_view(), name='waiting'),
 
     path('packages/add', PackageCreateView.as_view(), name='package_add' ),
     path('packages', PackageListView.as_view(), name='package_list'),

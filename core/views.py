@@ -37,7 +37,7 @@ def error_500(request):
 
 
 class Waiting(TemplateView):
-    template_name = 'waiting.html'
+    template_name = 'inactive_sacco.html'
 
 
 class EmailThread(threading.Thread):
@@ -81,11 +81,20 @@ class Homepage(TemplateView):
 @login_required
 @user_logged_in_before
 def dashboard(request):
-    saccos = Sacco.objects.all()
-    trails = Trail.objects.all()
+    sacco_user = SaccoUser.objects.get(user=request.user)
+    print(sacco_user.sacco)
+    sacco_status=sacco_user.sacco.status
+    print(sacco_status)
+
+    if sacco_status == 'inactive':
+        return redirect('waiting')
+    else:
+        saccos = Sacco.objects.all()
+        trails = Trail.objects.all()
     context = {
         'saccos': saccos,
         'trails': trails[:4],
+        'sacco': sacco_user.sacco,
         }
     return render(request, 'dashboard.html', context)
 
@@ -277,7 +286,6 @@ def package_activation(request, pk):
         return redirect('package_list')
 
 
-
 def member_limit(request):
     """Checks member limit in sacco based on package."""
     sacco = Sacco.objects.get(director=request.user)
@@ -360,7 +368,7 @@ class LicenseCreateView(CreateView):
             form.instance.sacco.status = 'active'
             form.instance.sacco.save()
             msg=f'License generated for {form.instance.sacco}'
-            messages.success('License generated successfuly')
+            messages.success(self.request, 'License generated successfuly')
             return super().form_valid(form)
 
 
