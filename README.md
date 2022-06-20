@@ -22,8 +22,8 @@ Admin
 - De/activates sacco
 - Creates license key
 - License  De/activates sacco status
-- trails
 - Multitenant sacco
+- trails
 - Set default settings
 - Dashboard-> package statuses & total,sacco statuses & total,  licenses statuses & next expiry, audits 
 

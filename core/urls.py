@@ -1,4 +1,5 @@
 from audioop import lin2adpcm
+from unicodedata import name
 from django.urls import path
 from .views import (
     settings, Homepage, dashboard,  Waiting,
@@ -9,7 +10,8 @@ from .views import (
     PackageUpdateView, PackageCreateView, PackageDeleteView, 
     package_activation, register,
     LicenseCreateView, LicenseListView, LicenseUpdateView, LicenseDeleteView,
-    # license_add, 
+    # license_add,   
+    ChangePackageView, member_limit
 
 )
 
@@ -40,5 +42,8 @@ urlpatterns = [
     # path('licenses/add', license_add, name='license_add'),
     path('licenses/<int:pk>/update', LicenseUpdateView.as_view(), name='license_update'),
     path('licenses/<str:pk>/delete', LicenseDeleteView.as_view(), name='license_delete'), 
+
+    path('change_package/<str:pk>', ChangePackageView.as_view(), name='change_package'),
+    path('member_limit', member_limit, name='member_limit'),
 
 ]

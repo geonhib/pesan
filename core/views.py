@@ -84,8 +84,8 @@ def dashboard(request):
     saccos = Sacco.objects.all()
     trails = Trail.objects.all()
     context = {
-        'saccos': saccos[:8],
-        'trails': trails,
+        'saccos': saccos,
+        'trails': trails[:4],
         }
     return render(request, 'dashboard.html', context)
 
@@ -170,6 +170,7 @@ class SaccoUpdateView(UpdateView):
     success_message = "%(sacco) was edited."
 
     def form_valid(self, form):
+        form.instance.created_by = self.request.user
         msg= f"Sacco {form.instance.name} updated successfully."
         messages.success(self.request, msg)
         Trail.objects.create(sacco=form.instance, event=msg, created_on=timezone.now())
@@ -186,6 +187,8 @@ class SaccoDeleteView(DeleteView):
         msg= f"Sacco {{form.instance.name}} deleted."
         messages.success(self.request, msg)
         return super().form_valid(form)
+
+
 
 
 def sacco_activation(request, pk):
@@ -273,6 +276,23 @@ def package_activation(request, pk):
         messages.info(request, activate_msg)
         return redirect('package_list')
 
+
+
+def member_limit(request):
+    """Checks member limit in sacco based on package."""
+    sacco = Sacco.objects.get(director=request.user)
+    MEMBER_LIMIT = sacco.package.capacity
+    sacco_users = SaccoUser.objects.filter(sacco=sacco).select_related('user')
+    SACCO_MEMBERS=sacco_users.count()
+    if SACCO_MEMBERS <= MEMBER_LIMIT:
+        msg='pass'
+        print(msg)
+        return redirect('register')
+    else:
+        msg = f"Hi {request.user} your package capacity limit is {MEMBER_LIMIT} and You have reached it"
+        messages.info(request, msg)
+        return redirect('user_list')
+    
 
 @login_required
 def register(request):
@@ -405,6 +425,21 @@ class LicenseDeleteView(DeleteView):
         return super().form_valid(form)
     
 
+
+class ChangePackageView(UpdateView):
+    model = Sacco 
+    context_object_name = 'sacco'
+    template_name = 'packages/change.html'
+    fields = [ 'package',]
+    success_message = "%(sacco) package was edited."
+
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        form.instance.updated_on = timezone.now()
+        msg= f"Sacco {form.instance.name} updated successfully."
+        messages.success(self.request, msg)
+        Trail.objects.create(sacco=form.instance, event=msg, created_on=timezone.now())
+        return super().form_valid(form)
 
 
 

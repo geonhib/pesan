@@ -24,6 +24,7 @@ class PackageForm(forms.ModelForm):
         fields = ['name', 'capacity', 'price', ]
 
 
+
 class RegisterForm(forms.ModelForm):
     class Meta:
         model = User

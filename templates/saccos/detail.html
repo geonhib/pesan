@@ -47,17 +47,33 @@
                         </div>
                       </div>
 
-                    <div class="form-group mb-2">
-                      <a href="{% url 'sacco_update' sacco.id %}" class="btn btn-primary">Edit</a>
-                      
-                      {% if sacco.status == 'active' %}
-                        <a href="{% url 'sacco_activation' sacco.id %}" class="btn btn-warning mx-2">Suspend</a>
-                    {% else %}
-                         <a href="{% url 'sacco_activation' sacco.id %}" class="btn btn-success mx-2">Activate</a>
-                      {% endif %}
-                        
-                      <a href="{% url 'sacco_delete' sacco.id %}" class="btn btn-danger">Delete</a>
+                    <div class="row">
+                      <div class="col-md-7">
+                        <div class="form-group mb-2">
+                          <a href="{% url 'sacco_update' sacco.id %}" class="btn btn-primary">Edit sacco</a>
+
+                          {% if request.user.is_superuser %}
+                          <a href="{% url 'change_package' sacco.id %}" class="btn btn-primary mx-2">Change package</a>
+                          {% else %}
+                          {{empty}}
+                          {% endif %}
+                          
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <div class="form-group mb-2">
+                          {% if sacco.status == 'active' %}
+                            <a href="{% url 'sacco_activation' sacco.id %}" class="btn btn-warning">Suspend sacco</a>
+                        {% else %}
+                             <a href="{% url 'sacco_activation' sacco.id %}" class="btn btn-success">Activate sacco</a>
+                          {% endif %}
+                          <a href="{% url 'sacco_delete' sacco.id %}" class="btn btn-danger">Delete sacco</a>
+                        </div>
+                      </div>
                     </div>
+                    
+
+                    
 
             </div>
           </div>

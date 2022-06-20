@@ -2,7 +2,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, UserForm
 from django.contrib import messages
 from . import forms
 from django.contrib.auth import get_user_model
@@ -16,6 +16,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from core.models import Sacco, SaccoUser
+from django.utils import timezone
 
 
 def signup(request):
@@ -77,10 +78,8 @@ def signout(request):
 def users(request):
     users = User.objects.all()
     sacco = Sacco.objects.get(director=request.user)
-
     # in_sacco = SaccoUser.objects.filter(sacco=sacco)
     # print(in_sacco)
-
     sacco_users = SaccoUser.objects.filter(sacco=sacco).select_related('user')
     myitems = []
     for s in sacco_users:
@@ -90,11 +89,9 @@ def users(request):
             'gender': s.user.gender,
             'get_full_name': s.user.get_full_name(),
             'is_active': s.user.is_active,
+            'get_absolute_url': s.user.get_absolute_url()
             })
         # print(myitems)
-
-    
-
 
         # sacco_users = SaccoUser.objects.filter(user=users, sacco=sacco)
         # sacco_users = users.filter(is_staff=False, is_superuser=False)
@@ -105,11 +102,41 @@ def users(request):
     return render(request, 'account/list.html', context)
 
 
+# def users(request):
+#     users = User.objects.all()
+#     sacco = Sacco.objects.get(director=request.user)
+#     in_sacco = SaccoUser.objects.filter(sacco=sacco)
+#     print(in_sacco)
+#     # print(in_sacco)
+
+#         # sacco_users = SaccoUser.objects.filter(user=users, sacco=sacco)
+#         # sacco_users = users.filter(is_staff=False, is_superuser=False)
+        
+#     context = {
+#         'users': in_sacco,
+#         }
+#     return render(request, 'account/list.html', context)
+
+
 
 
 def user(request, pk):
     user = get_object_or_404(User, pk=pk)
-    context = {'user':user}
+    
+    if request.method == 'POST':
+        edit_form = UserForm(request.POST, request.FILES, instance=user)
+        if edit_form.is_valid():
+            instance = edit_form.save(commit=False)
+            instance.updated_by = request.user
+            instance.updated_on = timezone.now()
+            instance.save()
+            msg = f"{instance} updated their profile"
+    else:
+        edit_form = UserForm(instance=user)
+    context = {
+        'user':user,
+        'edit_form': edit_form,
+    }
     return render(request, 'account/user.html', context)
 
 

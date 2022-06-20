@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
     <div class="container-fluid">
@@ -8,7 +8,7 @@
         <div class="col-12 col-lg-10 col-xl-8">
           <h2 class="h3 mb-4 page-title">Settings</h2>
           <div class="my-4">
-            <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+            <!-- <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Profile</a>
               </li>
@@ -18,8 +18,10 @@
               <li class="nav-item">
                 <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Notifications</a>
               </li>
-            </ul>
-            <form>
+            </ul> -->
+
+
+            <!-- <form> -->
               <div class="row mt-5 align-items-center">
                 <div class="col-md-3 text-center mb-5">
                   <div class="avatar avatar-xl">
@@ -50,21 +52,56 @@
                     </div>
                   </div>
                   <div class="row mb-4">
-                    <div class="col-md-7">
+                    <!-- <ntrol styles, layout options, and custom components for creating a wide variety of formsdiv class="col-md-7">
                       <p class="text-muted"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit nisl ullamcorper, rutrum metus in, congue lectus. In hac habitasse platea dictumst. Cras urna quam, malesuada vitae risus at, pretium blandit sapien. </p>
+                    </ntrol> -->
+                    <div class="col-4">
+                      <p class="small mb-0 text-muted">Email: {{user.email}} </p>
+                      <p class="small mb-0 text-muted">Name: {{user.get_full_name}} </p>
+                      <p class="small mb-0 text-muted">Telephone: {{user.telephone}}</p>
+                      <p class="small mb-0 text-muted">Date of birth: {{user.date_of_birth}}</p> 
+                      <p class="small mb-0 text-muted">Gender: {{user.gender}}</p>
                     </div>
-                    <div class="col">
-                      <p class="small mb-0 text-muted"> {{user.email}} </p>
-                      <p class="small mb-0 text-muted">{{user.telephone}}</p>
+                    <div class="col-4">
+                      <p class="small mb-0 text-muted">Employer type: {{user.employer_type}} </p>
+                      <p class="small mb-0 text-muted">Employer: {{user.organization|title}}</p>
                       <hr>
-                      <p class="small mb-0 text-muted">{{user.id_type}}</p> ss
-                      <p class="small mb-0 text-muted">{{user.id_number}}</p>mm
+                      <p class="small mb-0 text-muted">ID type: {{user.id_type}}</p> 
+                      <p class="small mb-0 text-muted">ID number{{user.id_number}}</p>
+                      <hr>
+                      <p class="small mb-0 text-muted">Next of Kin: {{user.next_of_kin_name|title}}</p> 
+                      <p class="small mb-0 text-muted">Contact {{user.next_of_kin_contact}}</p>
                     </div>
                   </div>
+                  <hr>
+                  
+                  {% if request.user == user %}
+                    {{empty}}
+                  {% else %}
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                    {% if request.user.is_active %}
+                    <a href="{% url 'user_activation' user.id %}" class="btn btn-warning text-white">Deactivate</a>
+                    {% else %}
+                    <a href="{% url 'user_activation' user.id %}" class="btn btn-success text-white">Activate</a>
+                    {% endif %}
+                    <a href="{% url 'delete_user' user.id %}" class="btn btn-danger mx-3 px-4">Delete</a>
+                    {% else %}
+                    {{empty}}                        
+                    {% endif %}
+                  {% endif %}
+                    
+               
                 </div>
               </div>
               <hr class="my-4">
-              <div class="form-row">
+
+              <form method="post">
+                {% csrf_token %}
+                {{edit_form|crispy}}
+                <input type="submit" class="btn btn-success text-white" value="Update">
+              </form>
+
+              <!-- <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="firstname">Firstname</label>
                   <input type="text" id="firstname" class="form-control" placeholder="Brown">
@@ -127,7 +164,11 @@
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Save Change</button>
-            </form>
+               -->
+           
+              <!-- </form> -->
+
+
           </div> <!-- /.card-body -->
         </div> <!-- /.col-12 -->
       </div> <!-- .row -->
