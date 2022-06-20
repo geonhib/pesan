@@ -47,8 +47,9 @@
             {% endblock template %}
             
               {% if request.user.is_authenticated %}
-              <a href="{% url 'signin' %}" class="btn btn-lg btn-success px-5">Go to Dashboard</a>
-              {% else %}
+              <a href="{% url 'signin' %}" class="btn btn-lg btn-success px-5">Go to Dashboard</a> <br> <br>
+              <a href="{% url 'pre_signout' %}" class="font-weight-bold">Sign out</a>
+              {% else%}
               <a href="{% url 'homepage' %}" class="btn btn-lg btn-primary px-5">Go to Homepage</a>
               {% endif %}
                   
