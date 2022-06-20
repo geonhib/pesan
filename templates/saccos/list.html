@@ -59,8 +59,8 @@
                 <th>Package</th>
                 <th>District</th>
                 <th>Director</th>
-                <th>Status</th>
                 <th>Created on</th>
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -74,16 +74,18 @@
                     <label class="custom-control-label" for="2132"></label>
                   </div>
                 </td> -->
-                <td>{{sacco.name|title}}</td>
+                <td>
+                  <a href="{{ sacco.get_absolute_url }}">{{sacco.name|title}}</a>
+                  </td>
                 <td>{{sacco.package}}</td>
                 <td>{{sacco.district}}</td>
                 <td>{{sacco.director}}</td>
                 <td>{{sacco.created_on}}</td>
                 <td>
                     {% if sacco.status == 'active' %}
-                    <span class="badge badge-success">Active</span>
+                    <span class="badge badge-success text-white">Active</span>
                     {% else %}
-                    <span class="badge badge-warning">Inactive</span>
+                    <span class="badge badge-danger text-white">Inactive</span>
                     {% endif %}  
                 </td>
                 <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
