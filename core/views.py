@@ -1,4 +1,3 @@
-from turtle import circle
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.mail import send_mail
 from django.urls import reverse_lazy, reverse
@@ -13,7 +12,7 @@ import urllib.request
 from django.utils import timezone
 from django.contrib import messages
 from core.forms import SaccoForm, LicenseForm
-from .models import Sacco, SaccoUser, Package, License
+from .models import Sacco, SaccoUser, Package, License, Trail
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from accounts.forms import UserForm
@@ -77,10 +76,18 @@ class Homepage(TemplateView):
         else:
             return super().get(request, *args, **kwargs)
 
+
+
 @login_required
 @user_logged_in_before
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    saccos = Sacco.objects.all()
+    trails = Trail.objects.all()
+    context = {
+        'saccos': saccos[:8],
+        'trails': trails,
+        }
+    return render(request, 'dashboard.html', context)
 
 
 def settings(request):
@@ -159,12 +166,13 @@ class SaccoUpdateView(UpdateView):
     model = Sacco 
     context_object_name = 'sacco'
     template_name = 'saccos/update.html'
-    fields = '__all__'
+    fields = ['name', 'package', 'district', 'location', 'email', 'director', 'status', 'created_by']
     success_message = "%(sacco) was edited."
 
     def form_valid(self, form):
-        msg= f"Sacco {{form.instance.name}} updated successfully."
+        msg= f"Sacco {form.instance.name} updated successfully."
         messages.success(self.request, msg)
+        Trail.objects.create(sacco=form.instance, event=msg, created_on=timezone.now())
         return super().form_valid(form)
 
 

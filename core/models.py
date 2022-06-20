@@ -17,8 +17,8 @@ class SaccoManager(models.Manager):
         return business
 
 STATUS = (
-    ('active', 'active'),
-    ('inactive', 'inactive')
+    ('Active', 'active'),
+    ('Inactive', 'inactive')
 )
 class CustomModel(models.Model):
     """
@@ -87,6 +87,22 @@ class SaccoUser(models.Model):
     def __str__(self):
         return f"{self.user} - {self.sacco}"
 
+
+class Trail(models.Model):
+    sacco = models.ForeignKey(Sacco, null=True, on_delete=models.SET_NULL)
+    event = models.CharField(max_length=90, null=True)
+    url = models.URLField(max_length=90, null=True, blank=True)
+    created_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_on']
+
+    def get_absolute_url(self):
+        return reverse('trail_detail', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return f"{self.created_by} - {self.event}"
 
 class License(CustomModel):
     key = models.CharField(max_length=80, unique=True)

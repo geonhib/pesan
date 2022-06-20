@@ -242,58 +242,36 @@
             <div class="card shadow eq-card">
               <div class="card-header">
                 <strong class="card-title">Overview of saccos</strong>
-                <a class="float-right small text-muted" href="#!">View all</a>
+                <a class="float-right small text-muted" href="{% url 'sacco_list' %}">View all</a>
               </div>
               <div class="card-body">
                 <table class="table table-hover table-borderless table-striped mt-n3 mb-n1">
                   <thead>
                     <tr>
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th>Company</th>
-                      <th>Date</th>
+                      <th>#</th>
+                      <th>Sacco</th>
+                      <th>Package</th>
+                      <th>Location</th>
+                      <th>Date joined</th>
+                      <th>Director</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {% for sacco in saccos %}
                     <tr>
-                      <td>3224</td>
-                      <th scope="col">Keith Baird</th>
-                      <td>Enim Limited<br /><span class="small text-muted">901-6206 Cras Av.</span></td>
-                      <td>Apr 24, 2019</td>
-                      <td><span class="dot dot-lg bg-warning mr-2"></span></td>
+                      <td>3</td>
+                      <th scope="col"><a href="{{sacco.get_absolute_url}}">{{sacco.name|title}}</a></th>
+                      <td>{{sacco.package|title}}</td>
+                      <td>{{sacco.district|title}}<br /><span class="small text-muted">{{sacco.location|title}}</span></td>
+                      <td>{{sacco.created_on|date}}</td>
+                      <td>{{sacco.director}}</td>
+                      <td>{{sacco.status|title}}</td>
+                      <!-- <td><span class="dot dot-lg bg-warning mr-2"></span></td> -->
                     </tr>
-                    <tr>
-                      <td>3218</td>
-                      <th scope="col">Graham Price</th>
-                      <td>Nunc Lectus Incorporated<br /><span class="small text-muted">Ap #705-5389 Id St.</span></td>
-                      <td>May 23, 2020</td>
-                      <td><span class="dot dot-lg bg-success mr-2"></span></td>
-                    </tr>
-                    <tr>
-                      <td>2651</td>
-                      <th scope="col">Reuben Orr</th>
-                      <td>Nisi Aenean Eget Limited<br />
-                        <span class="small text-muted">7425 Malesuada Rd.</span></td>
-                      <td>Nov 4, 2019</td>
-                      <td><span class="dot dot-lg bg-warning mr-2"></span></td>
-                    </tr>
-                    <tr>
-                      <td>2636</td>
-                      <th scope="col">Akeem Holder</th>
-                      <td>Pellentesque Associates<br />
-                        <span class="small text-muted">896 Sodales St.</span></td>
-                      <td>Mar 27, 2020</td>
-                      <td><span class="dot dot-lg bg-danger mr-2"></span></td>
-                    </tr>
-                    <tr>
-                      <td>2757</td>
-                      <th scope="col">Beau Barrera</th>
-                      <td>Augue Incorporated<br />
-                        <span class="small text-muted">4583 Id St.</span></td>
-                      <td>Jan 13, 2020</td>
-                      <td><span class="dot dot-lg bg-success mr-2"></span></td>
-                    </tr>
+                    {% endfor %}
+                      
+                 
                   </tbody>
                 </table>
               </div> <!-- .card-body -->
@@ -307,47 +285,27 @@
                 <a class="float-right small text-muted" href="#!">View all</a>
               </div>
               <div class="card-body" data-simplebar style="height: 360px; overflow-y: auto; overflow-x: hidden;">
+              
+                {% for trail in trails %}
                 <div class="pb-3 timeline-item item-primary">
                   <div class="pl-5">
-                    <div class="mb-1 small"><strong>@Brown Asher</strong><span class="text-muted mx-2">Just create new layout Index, form, table</span><strong>Tiny Admin</strong></div>
-                    <p class="small text-muted">Creative Design <span class="badge badge-light">1h ago</span>
-                    </p>
-                  </div>
-                </div>
-                <div class="pb-3 timeline-item item-warning">
-                  <div class="pl-5">
-                    <div class="mb-3 small"><strong>@Fletcher Everett</strong><span class="text-muted mx-2">created new group for</span><strong>Tiny Admin</strong></div>
-                    <ul class="avatars-list mb-2">
-                      <li>
-                        <a href="#!" class="avatar avatar-sm">
-                          <img alt="..." class="avatar-img rounded-circle" src="./assets/avatars/face-1.jpg">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!" class="avatar avatar-sm">
-                          <img alt="..." class="avatar-img rounded-circle" src="./assets/avatars/face-4.jpg">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!" class="avatar avatar-sm">
-                          <img alt="..." class="avatar-img rounded-circle" src="./assets/avatars/face-3.jpg">
-                        </a>
-                      </li>
-                    </ul>
-                    <p class="small text-muted">Front-End Development <span class="badge badge-light">1h ago</span>
-                    </p>
-                  </div>
-                </div>
-                <div class="pb-3 timeline-item item-success">
-                  <div class="pl-5">
-                    <div class="mb-2 small"><strong>@Kelley Sonya</strong><span class="text-muted mx-2">has commented on</span><strong>Advanced table</strong></div>
-                    <div class="card d-inline-flex mb-2">
-                      <div class="card-body bg-light small py-2 px-3"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. </div>
+                    <div class="mb-3 small"><strong>
+                      {{trail.created_by}}</strong><span class="mx-2">{{trail.event}}</span>
                     </div>
-                    <p class="small text-muted">Back-End Development <span class="badge badge-light">1h ago</span>
-                    </p>
+                    <!-- <ul class="avatars-list mb-2">
+                      <li>
+                        <a href="#" class="avatar avatar-sm">
+                          <img alt="photo" class="avatar-img rounded-circle" src="{% static 'assets/avatars/face-1.jpg' %}">
+                        </a>
+                      </li>
+                    </ul> -->
+                     <span class="badge badge-light">{{trail.created_on}}</span>
                   </div>
                 </div>
+                {% endfor %}
+                  
+                
+                
               </div> <!-- / .card-body -->
             </div> <!-- / .card -->
           </div> <!-- / .col-md-3 -->
