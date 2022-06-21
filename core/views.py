@@ -81,20 +81,27 @@ class Homepage(TemplateView):
 @login_required
 @user_logged_in_before
 def dashboard(request):
-    sacco_user = SaccoUser.objects.get(user=request.user)
-    print(sacco_user.sacco)
-    sacco_status=sacco_user.sacco.status
-    print(sacco_status)
-
-    if sacco_status == 'inactive':
-        return redirect('waiting')
-    else:
+    if request.user.is_superuser:
         saccos = Sacco.objects.all()
         trails = Trail.objects.all()
+        sacco_user = ''
+        sacco = ''
+        
+    else:
+        saccos = ''
+        sacco_user = SaccoUser.objects.get(user=request.user)
+        sacco=sacco_user.sacco
+        sacco_status=sacco_user.sacco.status
+
+        if sacco_status == 'inactive':
+            return redirect('waiting')
+        else:
+            trails = Trail.objects.filter(sacco=sacco)
+            print(trails)
     context = {
         'saccos': saccos,
         'trails': trails[:4],
-        'sacco': sacco_user.sacco,
+        'sacco': sacco,
         }
     return render(request, 'dashboard.html', context)
 
@@ -142,7 +149,7 @@ def sacco_add(request):
                 # audit
                 email=user_instance.email
                 EmailThread.send_mail('School registered', msg, host, [email, ], fail_silently=False)
-                return redirect('sacco_detail', sacco_instance.id)
+                return redirect('license_list')
             
         else:
             sacco_msg=sacco_form.errors
@@ -179,10 +186,13 @@ class SaccoUpdateView(UpdateView):
     success_message = "%(sacco) was edited."
 
     def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        msg= f"Sacco {form.instance.name} updated successfully."
+        sacco=form.instance
+        sacco.updated_by = self.request.user
+        sacco.updated_on = timezone.now()
+        msg= f"{sacco} updated successfully."
+        print(sacco)
         messages.success(self.request, msg)
-        Trail.objects.create(sacco=form.instance, event=msg, created_on=timezone.now())
+        Trail.objects.create(sacco=sacco, event=msg, created_on=timezone.now())
         return super().form_valid(form)
 
 
@@ -193,11 +203,9 @@ class SaccoDeleteView(DeleteView):
     success_url = reverse_lazy('sacco_list')
 
     def form_valid(self, form):
-        msg= f"Sacco {{form.instance.name}} deleted."
+        msg= f"Sacco {form.instance.name} deleted."
         messages.success(self.request, msg)
         return super().form_valid(form)
-
-
 
 
 def sacco_activation(request, pk):
@@ -329,7 +337,7 @@ def register(request):
                 print(f"Director: {director} created user: {user} password: {password}")
                 msg = f"Director: {director} created user: {user}"
                 messages.success(request, msg)
-                # audit
+                Trail.objects.create(sacco=sacco, event=msg, created_on=timezone.now(), created_by=director)
                 email=user.email
                 EmailThread.send_mail('School registered', msg, host, [email, ], fail_silently=False)
                 SaccoUser.objects.create(user=user, sacco=sacco)

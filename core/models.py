@@ -89,7 +89,7 @@ class SaccoUser(models.Model):
 
 
 class Trail(models.Model):
-    sacco = models.ForeignKey(Sacco, null=True, on_delete=models.SET_NULL)
+    sacco = models.ForeignKey(Sacco, blank=True, null=True, on_delete=models.SET_NULL)
     event = models.CharField(max_length=90, null=True)
     url = models.URLField(max_length=90, null=True, blank=True)
     created_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)

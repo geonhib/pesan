@@ -50,14 +50,13 @@ MARITAL_STATUS = (
     ('married', 'married'),
     ('divorced', 'divorced'),
 )
-EMPLOYER_TYPE = (
-    ('self-employed', 'self-employed'),
+EMPLOYMENT_TYPE = (
+    ('self-employment', 'self-employment'),
     ('organization', 'organization'),
 )
 ID_TYPE = (
-    ('national ID', 'national'),
-    ('pasport', 'passport'),
-    ('other', 'other'),
+    ('national', 'national'),
+    ('passport', 'passport'),
 )
 class User(AbstractBaseUser, PermissionsMixin):
     """Abastract Base User model"""
@@ -69,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)  
     telephone = models.CharField(max_length=15, blank=True, null=True, unique=True)
     id_type = models.CharField(max_length=20, blank=True, choices=ID_TYPE, default='national')
-    id_number = models.CharField(max_length=30, blank=True, null=True, validators=[MinLengthValidator(9), MaxLengthValidator(14)])
+    id_number = models.CharField(max_length=20, unique=True, blank=True, null=True, validators=[MinLengthValidator(9), MaxLengthValidator(14)])
     photo = models.ImageField(upload_to='profile/', blank=True, null=True, validators=[image_validator])
     date_joined = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -84,7 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     next_of_kin_name = models.CharField(max_length=50, blank=True, null=True)
     next_of_kin_contact = models.CharField(max_length=50, blank=True, null=True)
     occupation = models.CharField(max_length=60, blank=True, null=True)
-    employer_type = models.CharField(max_length=60, blank=True, choices=EMPLOYER_TYPE, default='organization')
+    employer_type = models.CharField(max_length=60, blank=True, choices=EMPLOYMENT_TYPE, default='organization')
     organization = models.CharField(max_length=80, blank=True, null=True)
 
     objects = UserManager() 

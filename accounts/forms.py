@@ -29,27 +29,26 @@ MARITAL_STATUS = (
     ('married', 'married'),
     ('divorced', 'divorced'),
 )
-EMPLOYER_TYPE = (
-    ('self-employed', 'self-employed'),
+EMPLOYMENT_TYPE = (
+    ('self-employment', 'self-employment'),
     ('organization', 'organization'),
 )
 ID_TYPE = (
-    ('national ID', 'national'),
-    ('pasport', 'passport'),
-    ('other', 'other'),
+    ('national', 'national'),
+    ('passport', 'passport'),
 )
 class UserForm(forms.ModelForm):
-    first_name = forms.CharField(label='First name', widget=forms.TextInput(attrs={'placeholder': 'Enter your first name'}))
-    last_name = forms.CharField(label='Last name', widget=forms.TextInput(attrs={'placeholder': 'Enter your surname'}))
-    email = forms.CharField(label='Email address', widget=forms.TextInput(attrs={'placeholder': 'Enter email address'}))
-    telephone = forms.CharField(label='Telephone', widget=forms.TextInput(attrs={'placeholder': 'Enter telephone number'}))
-    id_type = forms.ChoiceField(label='ID type', widget=forms.Select, choices=ID_TYPE)
-    id_number = forms.CharField(label='ID number', widget=forms.TextInput(attrs={'placeholder': 'Enter your ID number'}))
-    gender = forms.ChoiceField(widget=forms.Select, choices=GENDER)
-    next_of_kin_name = forms.CharField(label='Next of kin name', widget=forms.TextInput(attrs={'placeholder': 'Enter name of next of kin'}))
-    next_of_kin_contact = forms.CharField(label='Next of kin contact', widget=forms.TextInput(attrs={'placeholder': 'Enter contact of next of kin'}))
-    # organization = forms.CharField(label='Organization', widget=forms.Select(attrs={'placeholder': 'Enter name of organization you are employed at'}))
-    organization = forms.CharField(label='Organization', widget=forms.TextInput(attrs={'placeholder': 'Enter the organization you work at'}))
+    # first_name = forms.CharField(label='First name', widget=forms.TextInput(attrs={'placeholder': 'Enter your first name'}))
+    # last_name = forms.CharField(label='Last name', widget=forms.TextInput(attrs={'placeholder': 'Enter your surname'}))
+    # email = forms.CharField(label='Email address', widget=forms.TextInput(attrs={'placeholder': 'Enter email address'}))
+    # telephone = forms.CharField(label='Telephone', widget=forms.TextInput(attrs={'placeholder': 'Enter telephone number'}))
+    # id_type = forms.ChoiceField(label='ID type', widget=forms.Select, choices=ID_TYPE)
+    # id_number = forms.CharField(label='ID number', widget=forms.TextInput(attrs={'placeholder': 'Enter your ID number'}))
+    # gender = forms.ChoiceField(widget=forms.Select, choices=GENDER)
+    # next_of_kin_name = forms.CharField(label='Next of kin name', widget=forms.TextInput(attrs={'placeholder': 'Enter name of next of kin'}))
+    # next_of_kin_contact = forms.CharField(label='Next of kin contact', widget=forms.TextInput(attrs={'placeholder': 'Enter contact of next of kin'}))
+    # # organization = forms.CharField(label='Organization', widget=forms.Select(attrs={'placeholder': 'Enter name of organization you are employed at'}))
+    # organization = forms.CharField(label='Organization', widget=forms.TextInput(attrs={'placeholder': 'Enter the organization you work at'}))
 
     class Meta:
         model = User
