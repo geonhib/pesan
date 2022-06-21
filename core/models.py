@@ -48,18 +48,29 @@ class Package(CustomModel):
         return reverse('package_detail', kwargs={'pk': self.pk})
 
 
+SACCO_TYPE = (
+    ('multipurpose', 'multipurpose'),
+    ('savings', 'savings'),
+    ('loans', 'loans'),
+)
 class Sacco(CustomModel):
     """"
     The core model for this application.
     """
     name = models.CharField(max_length=80, unique=True)
+    type = models.CharField(max_length=40, choices=SACCO_TYPE, default='savings')
+    tin = models.CharField(max_length=14, unique=True)
     package = models.ForeignKey(Package, null=True, on_delete=models.SET_NULL, related_name='bussiness_package')  # TODO Set package to default rather than null
     district = models.CharField(max_length=60, null=True, blank=True,)
     location = models.CharField(max_length=60, null=True, blank=True,)
     email = models.EmailField(null=True, blank=True, unique=True)  
     # website = models.URLField(null=True, blank=True)
-    director = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='bussiness_director', blank=True,)
+    by_laws = models.FileField(upload_to='by_laws', null=True, blank=True, validators=[image_validator])
+    permit = models.FileField(upload_to='permit',  validators=[image_validator])
+    recommendation = models.FileField(upload_to='recommendation',  validators=[image_validator], help_text='Recommendation from LC1')
+    incorporation = models.FileField(upload_to='certificates',  validators=[image_validator], help_text='Certificate of incorporation')
     status = models.CharField(max_length=10, default='inactive')
+    director = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='business_director', blank=True,)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bussiness_creator')
     updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bussiness_updater', null=True, blank=True)
 

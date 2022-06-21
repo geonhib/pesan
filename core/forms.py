@@ -6,16 +6,26 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import widgets
 
 
-class SaccoForm(forms.ModelForm):    
+
+SACCO_TYPE = (
+    ('savings', 'savings'),
+    ('loans', 'loans')
+)
+class SaccoForm(forms.ModelForm):   
+    type = forms.ChoiceField(label='Sacco type', widget=forms.Select, choices=SACCO_TYPE)
+    tin = forms.CharField(label='Tax Indentification Number', widget=forms.TextInput(attrs={'placeholder': 'Enter your TIN'}))
     package = forms.ModelChoiceField(queryset=Package.objects.filter(status='active'), empty_label='Select business package')
     name = forms.CharField(label='Name of business', widget=forms.TextInput(attrs={'placeholder': 'Enter name of business'}))
     district = forms.CharField(label='District', widget=forms.TextInput(attrs={'placeholder': 'Enter district of business location'}))
-    location = forms.CharField(label='Location', widget=forms.TextInput(attrs={'placeholder': 'Enter physical address'}))
+    location = forms.CharField(label='Office location', widget=forms.TextInput(attrs={'placeholder': 'Enter physical address'}))
     email = forms.CharField(label='Email address', widget=forms.TextInput(attrs={'placeholder': 'Enter email address of sacco'}))
 
     class Meta:
         model = Sacco
-        fields = ('name', 'package', 'district', 'location', 'email',  )
+        fields = (
+            'name', 'type', 'tin', 'package', 'district', 'location', 'email', 'incorporation',
+            'permit',  'by_laws', 'recommendation', 
+          )
 
 
 class PackageForm(forms.ModelForm):

@@ -13,29 +13,124 @@
 
       <form action="" method="post">
         {% csrf_token %}
-      <div class="row">
-        <div class="col-md-5">
-          <div class="card shadow mb-4">
-            <div class="card-header">
-              <strong class="card-title">Inline Form</strong>
-            </div>
-            <div class="card-body">
-                  <h4>Register Sacco Director</h4>
-                  {% csrf_token %}
-                  {{sacco_form|crispy}}
-               
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card shadow mb-4">
+              <div class="card-header">
+                <strong class="card-title">Inline Form</strong>
+              </div>
+
+              <!-- start form -->
+              <div class="card-body">
+                <h4>Register Sacco</h4>
+
+                <div id="div_id_name" class="form-group"> <label for="id_name" class=" requiredField">
+                    Name of business<span class="asteriskField">*</span> </label>
+                  <div> <input type="text" name="name" placeholder="Enter name of business"
+                      class="textinput textInput form-control" required="" id="id_name"> </div>
+                </div>
+
+                <div id="div_id_tin" class="form-group"> <label for="id_tin" class=" requiredField">
+                    Tax Indentification Number<span class="asteriskField">*</span> </label>
+                  <div> <input type="text" name="tin" placeholder="Enter your TIN"
+                      class="textinput textInput form-control" required="" id="id_tin"> </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="col-md-6 mb-3">
+                    <div id="div_id_type" class="form-group"> <label for="id_type" class=" requiredField">
+                        Sacco type<span class="asteriskField">*</span> </label>
+                      <div> <select name="type" class="select form-control" id="id_type">
+                          <option value="savings">savings</option>
+                          <option value="loans">loans</option>
+
+                        </select> </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div id="div_id_package" class="form-group"> <label for="id_package" class=" requiredField">
+                        Package<span class="asteriskField">*</span> </label>
+                      <div> <select name="package" class="select form-control" required="" id="id_package">
+                          <option value="" selected="">Select business package</option>
+
+                        </select> </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="col-md-6 mb-3">
+                    <div id="div_id_district" class="form-group"> <label for="id_district" class=" requiredField">
+                        District<span class="asteriskField">*</span> </label>
+                      <div> <input type="text" name="district" placeholder="Enter district of business location"
+                          class="textinput textInput form-control" required="" id="id_district"> </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div id="div_id_location" class="form-group"> <label for="id_location" class=" requiredField">
+                        Office location<span class="asteriskField">*</span> </label>
+                      <div> <input type="text" name="location" placeholder="Enter physical address"
+                          class="textinput textInput form-control" required="" id="id_location"> </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="div_id_email" class="form-group"> <label for="id_email" class=" requiredField">
+                    Email address<span class="asteriskField">*</span> </label>
+                  <div> <input type="text" name="email" placeholder="Enter email address of sacco"
+                      class="textinput textInput form-control" required="" id="id_email"> </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="col-md-6 mb-3">
+                    <div id="div_id_permit" class="form-group"> <label for="id_permit" class=" requiredField">
+                        Permit<span class="asteriskField">*</span> </label>
+                      <div> <input type="file" name="permit" class="clearablefileinput form-control-file" required=""
+                          id="id_permit"> </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div id="div_id_by_laws" class="form-group"> <label for="id_by_laws" class="">
+                        By laws
+                      </label>
+                      <div> <input type="file" name="by_laws" class="clearablefileinput form-control-file"
+                          id="id_by_laws">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="col-md-6 mb-3">
+                    <div id="div_id_recommendation" class="form-group"> <label for="id_recommendation"
+                        class=" requiredField">
+                        Recommendation<span class="asteriskField">*</span> </label>
+                      <div> <input type="file" name="recommendation" class="clearablefileinput form-control-file"
+                          required="" id="id_recommendation"> </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <!-- incorporation -->
+                  </div>
+                </div>
+
+              </div>
+              <!-- end form -->
             </div>
           </div>
-        </div>
 
-        <div class="col-md-7">
-          <div class="card shadow mb-4">
-            <div class="card-header">
-              <strong class="card-title">Inline Form</strong>
-            </div>
-            <div class="card-body">
 
-              <h4>Register Sacco</h4>
+
+
+          <div class="col-md-6">
+            <div class="card shadow mb-4">
+              <div class="card-header">
+                <strong class="card-title">Inline Form</strong>
+              </div>
+              <div class="card-body">
+
+                <h4>Register Sacco Director</h4>
 
                 <div class="form-row">
                   <div class="col-md-6 mb-3">
@@ -139,7 +234,8 @@
                         Organization
                       </label>
                       <div> <input type="text" name="organization" maxlength="80"
-                          class="textinput textInput form-control" id="id_organization" placeholder="ABC limitted"> </div>
+                          class="textinput textInput form-control" id="id_organization" placeholder="ABC limitted">
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -150,7 +246,8 @@
                         Next of kin name
                       </label>
                       <div> <input type="text" name="next_of_kin_name" maxlength="50"
-                          class="textinput textInput form-control" id="id_next_of_kin_name" placeholder="john doe"> </div>
+                          class="textinput textInput form-control" id="id_next_of_kin_name" placeholder="john doe">
+                      </div>
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
@@ -159,67 +256,60 @@
                         Next of kin contact
                       </label>
                       <div> <input type="text" name="next_of_kin_contact" maxlength="50"
-                          class="textinput textInput form-control" id="id_next_of_kin_contact" placeholder="john@gmail.com"> </div>
+                          class="textinput textInput form-control" id="id_next_of_kin_contact"
+                          placeholder="john@gmail.com"> </div>
                     </div>
                   </div>
                 </div>
 
                 <input class="btn btn-success text-white" type="submit" value="Register">
-             
 
+              </div>
             </div>
           </div>
-        </div>
 
-      </div> <!-- end section -->
-    </form>
-      
+        </div> <!-- end section -->
+      </form>
+
     </div> <!-- .col-12 -->
   </div> <!-- .row -->
 </div> <!-- .container-fluid -->
 
 {% endblock content %}
-  
+
 
 
 <div class="container-fluid">
-    <div class="row justify-content-center">
-      <div class="col-12">
-        <h2 class="page-title">Register</h2>
-        <p class="text-muted">Register sacco attach sacco director.</p>
-  
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card shadow mb-4">
-              <div class="card-header">
-                <strong class="card-title">Inline Form</strong>
-              </div>
-              <div class="card-body">
-                
-                <form action="" method="post">
-                    <h4>Register Sacco</h4>
-                    {% csrf_token %}
-                    {{sacco_form|crispy}}
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <h2 class="page-title">Register</h2>
+      <p class="text-muted">Register sacco attach sacco director.</p>
 
-                    <hr class="my-4">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card shadow mb-4">
+            <div class="card-header">
+              <strong class="card-title">Inline Form</strong>
+            </div>
+            <div class="card-body">
 
-                    
-                    <h4 class="my-0">Register Director</h4>
-                    {{user_form|crispy}}
-                    <input class="btn btn-success" type="submit" value="Register">
-                 </form>
+              <form action="" method="post">
+                <h4>Register Sacco</h4>
+                {% csrf_token %}
+                {{sacco_form|crispy}}
 
-              </div>
+                <hr class="my-4">
+
+
+                <h4 class="my-0">Register Director</h4>
+                {{user_form|crispy}}
+                <input class="btn btn-success" type="submit" value="Register">
+              </form>
+
             </div>
           </div>
-        </div> <!-- end section -->
-      </div> <!-- .col-12 -->
-    </div> <!-- .row -->
-  </div> <!-- .container-fluid -->
-
-
-
-
-  
-
-    
+        </div>
+      </div> <!-- end section -->
+    </div> <!-- .col-12 -->
+  </div> <!-- .row -->
+</div> <!-- .container-fluid -->
